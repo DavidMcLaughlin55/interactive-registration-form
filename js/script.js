@@ -7,6 +7,8 @@ const jobRole = document.querySelector('#title');
 const colorSelect = document.querySelector('#color');
 const shirtDesign = document.querySelector('#design');
 const allColors = colorSelect.children;
+const registerForActivities = document.querySelector('#activities');
+const totalActivitiesCost = document.querySelector('#activities-cost');
 
 //FORM INIT ON LOAD
 window.onload = () => {
