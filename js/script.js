@@ -92,7 +92,6 @@ function choosePayment(e) {
         if (method.id === paymentSelected) {
             method.hidden = false;
             method.setAttribute('selected', 'true');
-            console.log(method);
         } else {
             method.hidden = true;
             method.setAttribute('selected', 'false');
@@ -120,22 +119,12 @@ function validationFailed(field) {
 const nameValidation = () => {
     const name = nameInput.value;
     const validName = /^[a-z]+\s[a-z]+$/i.test(name);
-    if (validName === true) {
-        validationPassed(nameInput);
-    } else if (validName === false) {
-        validationFailed(nameInput);
-    };
     return validName;
 };
 
 const emailValidation = () => {
     const email = emailInput.value;
     const validEmail = /[^@]+@[^@.]+\.com$/.test(email);
-    if (validEmail === true) {
-        validationPassed(emailInput);
-    } else if (validEmail === false) {
-        validationFailed(emailInput);
-    };
     return validEmail;
 };
 
@@ -147,44 +136,25 @@ const activityValidation = () => {
         };
     });
     if (selectedActivities.length > 0) {
-        validationPassed(activitySelection);
         return true;
-    } else {
-        validationFailed(activitySelection);
-        return false;
     };
 };
 
 const cardNumberValidation = () => {
     const cardNumber = cardNumberInput.value;
     const validCardNumber = /^\d{13,16}$/.test(cardNumber);
-    if (validCardNumber === true) {
-        validationPassed(cardNumberInput);
-    } else if (validCardNumber === false) {
-        validationFailed(cardNumberInput);
-    };
     return validCardNumber;
 };
 
 const cardZipCodeValidation = () => {
     const cardZipCode = cardZipCodeInput.value;
     const validZipCode = /^\d{5}$/.test(cardZipCode);
-    if (validZipCode === true) {
-        validationPassed(cardZipCodeInput);
-    } else if (validZipCode === false) {
-        validationFailed(cardZipCodeInput);
-    };
     return validZipCode;
 };
 
 const cardCVVValidation = () => {
     const cardCVV = cardCVVInput.value;
     const validCVV = /^\d{3}$/.test(cardCVV);
-    if (validCVV === true) {
-        validationPassed(cardCVVInput);
-    } else if (validCVV === false) {
-        validationFailed(cardCVVInput);
-    };
     return validCVV;
 };
 
@@ -209,19 +179,46 @@ payment.addEventListener('change', choosePayment);
 /* Checks if form submission is valid */
 form.addEventListener('submit', e => {
     let errors = [];
+
     if (!nameValidation()) {
         errors.push(nameInput);
-    } else if (!emailValidation()) {
+        validationFailed(nameInput);
+    } else {
+        validationPassed(nameInput);
+    };
+
+    if (!emailValidation()) {
         errors.push(emailInput);
-    } else if (!activityValidation()) {
+        validationFailed(emailInput);
+    } else {
+        validationPassed(emailInput);
+    };
+
+    if (!activityValidation()) {
         errors.push(activitySelection);
-    } else if (payment.value === 'credit-card') {
+        validationFailed(activitiesBox);
+    } else {
+        validationPassed(activitiesBox);
+    };
+
+    if (payment.value === 'credit-card') {
         if (!cardNumberValidation()) {
             errors.push(cardNumberInput);
-        } else if (!cardZipCodeValidation()) {
+            validationFailed(cardNumberInput);
+        } else {
+            validationPassed(cardNumberInput);
+        };
+        if (!cardZipCodeValidation()) {
             errors.push(cardZipCodeInput);
-        } else if (!cardCVVValidation()) {
+            validationFailed(cardZipCodeInput);
+        } else {
+            validationPassed(cardZipCodeInput);
+        };
+        if (!cardCVVValidation()) {
             errors.push(cardCVVInput);
+            validationFailed(cardCVVInput);
+        } else {
+            validationPassed(cardCVVInput);
         };
     };
     if (errors.length > 0) {
